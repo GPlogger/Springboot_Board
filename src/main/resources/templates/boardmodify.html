@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>게시물 작성</title>
+</head>
+<style>
+  body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  input {
+    width: 229px;
+    margin: 0px;
+    padding: 0px;
+  }
+</style>
+<body>
+<h1>게시물 수정</h1>
+<form th:action="@{/board/update/{id}(id = ${board.id})}" method="POST">
+  <table>
+    <tr>
+      <td>제목</td>
+      <td><input type="text" name="title" th:value="${board.title}"></td>
+    </tr>
+    <tr>
+      <td>닉네임</td>
+      <td><input type="text" name="nickname" th:value="${board.nickname}"><td>
+    </tr>
+    <tr>
+      <td>비밀번호</td>
+      <td><input type="password" name="password" th:value="${board.password}"></td>
+    </tr>
+    <tr>
+    <tr>
+      <td>내용</td>
+      <td><textarea name="content" id="" cols="30" rows="10" th:text="${board.content}"></textarea></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+        <button type="submit">수정</button>
+      </td>
+    </tr>
+  </table>
+</form>
+
+</body>
+</html>

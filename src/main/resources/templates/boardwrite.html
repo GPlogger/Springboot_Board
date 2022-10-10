@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>게시물 작성</title>
+</head>
+<style>
+    body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    input {
+        width: 229px;
+        margin: 0px;
+        padding: 0px;
+    }
+</style>
+<body>
+    <h1>게시물 작성</h1>
+    <form action="/board/writepro" method="POST">
+        <table>
+            <tr>
+                <td>제목</td>
+                <td><input type="text" name="title"></td>
+            </tr>
+            <tr>
+                <td>닉네임</td>
+                <td><input type="text" name="nickname"><td>
+            </tr>
+            <tr>
+                <td>비밀번호</td>
+                <td><input type="password" name="password"></td>
+            </tr>
+            <tr>
+                <td>내용</td>
+                <td><textarea name="content" id="" cols="30" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit">작성</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+</body>
+</html>
