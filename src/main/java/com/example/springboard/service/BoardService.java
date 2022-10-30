@@ -7,10 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 @Service
@@ -23,8 +20,8 @@ public class BoardService{
     }
 
     public BoardEntity readunique(Long id) {     // 단일 출력
-        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(
-                ()->{throw new RuntimeException("해당 정보가 없습니다.");});
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(     // 예외처리 하지 않으면 오류
+                ()->{throw new RuntimeException("해당 번호의 게시물은 없습니다.");});
         return boardEntity;
     }
 
@@ -33,8 +30,16 @@ public class BoardService{
         boardRepository.save(boardEntity);
     }
 
-
-    public void delete(int id) {        // 삭제
-        boardRepository.deleteById((long) id);
+    public void update(BoardDto boardDto, Long id) {
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(
+                ()->{throw new RuntimeException("해당 번호의 게시물은 없습니다.");});
+        boardEntity.update(boardDto.getTitle(), boardDto.getUsername(), boardDto.getContent());       // 엔티티에 업데이트 함수 작성 필요
+        boardRepository.save(boardEntity);
     }
+
+    public void delete(Long id) {        // 삭제
+        boardRepository.deleteById(id);
+    }
+
+
 }

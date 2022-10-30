@@ -36,13 +36,14 @@ public class BoardController {
     }
 
     @PutMapping("/update/{id}")  // 수정
-    public String Update(@RequestBody BoardEntity board, @PathVariable int id){
+    public BoardEntity Update(@RequestBody BoardDto boardDto, @PathVariable Long id){
         // PathVariable : 동적 path 를 수신하는 방법, /update/1 이 요청될 시 {id}를 자동으로 받아옴
-        return "Update";
+        boardService.update(boardDto, id);
+        return boardService.readunique(id);
     }
 
     @DeleteMapping("/delete/{id}") // 삭제
-    public void Delete(@PathVariable int id){
+    public void Delete(@PathVariable Long id){
         boardService.delete(id);
     }
 }
