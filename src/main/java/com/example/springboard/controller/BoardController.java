@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,15 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping("/board")  // http://localhost:8080/board/  가 기본 경로가 됨(다음에 read, add 등 붙여야 함)
 public class BoardController {
-
-    private final BoardRepository boardRepository;      // 상속 불가능, board 레퍼지토리에 직접적인 영향이 가지 않게 함
-    private final BoardService boardService;
+    private final BoardService boardService;    // 상속 불가능, board 레퍼지토리에 직접적인 영향이 가지 않게 함
 
     @GetMapping("/read") // 조회 (전체목록)
     public Page<BoardEntity> Get(Pageable pageable){
         return boardService.readAll(pageable);
     }
 
+    @GetMapping("/readunique/{id}") // 조회 (단일목록)
+    public BoardEntity readunique(@PathVariable Long id){
+        return boardService.readunique(id);
+    }
 
     @PostMapping("/add")  // 생성            DB 넣는 과정 컨트롤러 > DTO 형식 > 서비스 > 엔티티형식 만들고 DTO 의 toEntity 사용 > 엔티티형식을 레퍼지토리에 세이브
     public void Add(@RequestBody BoardDto boardDto){
@@ -32,14 +35,14 @@ public class BoardController {
         boardService.add(boardDto);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, path = "/update/{id}")  // 수정
+    @PutMapping("/update/{id}")  // 수정
     public String Update(@RequestBody BoardEntity board, @PathVariable int id){
         // PathVariable : 동적 path 를 수신하는 방법, /update/1 이 요청될 시 {id}를 자동으로 받아옴
         return "Update";
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, path = "/delete/{id}") // 삭제
-    public String Delete(@PathVariable int id){
-        return "Delete";
+    @DeleteMapping("/delete/{id}") // 삭제
+    public void Delete(@PathVariable int id){
+        boardService.delete(id);
     }
 }
