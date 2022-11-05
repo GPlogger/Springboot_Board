@@ -26,4 +26,5 @@ public class UserEntity {
     @Column(nullable = false, length = 10, unique = true)
     private String userName;
 
+
 }

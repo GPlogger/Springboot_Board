@@ -16,14 +16,14 @@ public class BoardDto {
     private String content;
 
 
-    public BoardEntity toEntity(){         // DTO 에서 Entity 로 보냄(보안)
-        BoardEntity boardEntity = BoardEntity.builder()     // builder 사용 ( builder 와 build 사이에 값 넣음)
-                .title(title)
-                .username(username)
-                .content(content)
-                .build();
-        return boardEntity;
-    }
+//    public BoardEntity toEntity(){         // DTO 에서 Entity 로 보냄(보안)
+//        BoardEntity boardEntity = BoardEntity.builder()     // builder 사용 ( builder 와 build 사이에 값 넣음)
+//                .title(title)
+//                .username(username)
+//                .content(content)
+//                .build();
+//        return boardEntity;
+//    }
 }
 // toEntity 작성 > 호출 > DB 작성
 // repository.save > entity 삽입
