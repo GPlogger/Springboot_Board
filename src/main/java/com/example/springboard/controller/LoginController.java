@@ -19,8 +19,8 @@ public class LoginController {
     private final UserRepository userRepository;
 
     @PostMapping("/signup")
-    public void signUp(@RequestBody UserRequestDto userRequestDto){
-        loginService.signUp(userRequestDto);
+    public String signUp(@RequestBody UserRequestDto userRequestDto){
+        return loginService.signUp(userRequestDto);
     }
 
 }

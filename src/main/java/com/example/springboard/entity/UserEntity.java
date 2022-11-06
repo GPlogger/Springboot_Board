@@ -1,5 +1,6 @@
 package com.example.springboard.entity;
 
+import com.example.springboard.enumcustom.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Cleanup;
@@ -26,5 +27,8 @@ public class UserEntity {
     @Column(nullable = false, length = 10, unique = true)
     private String userName;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserRole userRole;
 
 }
