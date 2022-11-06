@@ -28,14 +28,14 @@ public class LoginService {
 
     @Transactional
     public String signUp(UserRequestDto userRequestDto) {
-        // 에러 처리
-//        if(userRepository.existsByUserId(userRequestDto.getUserId())){
-//            log.info("ID 중복");
-//            throw new LoginErrorException("해당 ID는 중복됩니다.", ErrorCode.UNAUTHORIZED_EXCEPTION);
-//        } else if (userRepository.existsByUserName(userRequestDto.getUserName())){
-//            log.info("UserName 중복");
-//            throw new LoginErrorException("해당 사용자 명은 이미 사용중입니다.", ErrorCode.UNAUTHORIZED_EXCEPTION);
-//        }
+//         에러 처리
+        if(userRepository.existsByUserId(userRequestDto.getUserId())){
+            log.info("ID 중복");
+            throw new LoginErrorException("해당 ID는 중복됩니다.", ErrorCode.UNAUTHORIZED_EXCEPTION);
+        } else if (userRepository.existsByUserName(userRequestDto.getUserName())){
+            log.info("UserName 중복");
+            throw new LoginErrorException("해당 사용자 명은 이미 사용중입니다.", ErrorCode.UNAUTHORIZED_EXCEPTION);
+        }
 
 //
         String encodedPw = passwordEncoder.encode(userRequestDto.getUserPw());  // pw 인코딩
@@ -60,4 +60,3 @@ public class LoginService {
         return "login Failed";
     }
 }
-
