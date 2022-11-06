@@ -1,10 +1,7 @@
 package com.example.springboard.entity;
 
 import com.example.springboard.enumcustom.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Cleanup;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -12,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Getter
 @Table(name = "Users")
 public class UserEntity {
     @Id

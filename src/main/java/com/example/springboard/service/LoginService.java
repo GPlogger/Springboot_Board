@@ -1,5 +1,6 @@
 package com.example.springboard.service;
 
+import com.example.springboard.DTO.LoginRequestDto;
 import com.example.springboard.DTO.UserRequestDto;
 import com.example.springboard.entity.UserEntity;
 import com.example.springboard.enumcustom.UserRole;
@@ -12,8 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -47,5 +50,14 @@ public class LoginService {
         return "회원가입 완료";
     }
 
+    @Transactional
+    public String logIn(LoginRequestDto loginRequestDto) {
 
+        UserEntity userEntity = userRepository.findByUserId(loginRequestDto.getUserId());
+        if(passwordEncoder.matches(loginRequestDto.getUserPw(), userEntity.getUserPw())) {
+            return "login Succeed";
+        }
+        return "login Failed";
+    }
 }
+

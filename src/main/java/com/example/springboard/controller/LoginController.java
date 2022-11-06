@@ -1,5 +1,6 @@
 package com.example.springboard.controller;
 
+import com.example.springboard.DTO.LoginRequestDto;
 import com.example.springboard.DTO.UserRequestDto;
 import com.example.springboard.repository.UserRepository;
 import com.example.springboard.service.LoginService;
@@ -21,6 +22,11 @@ public class LoginController {
     @PostMapping("/signup")
     public String signUp(@RequestBody UserRequestDto userRequestDto){
         return loginService.signUp(userRequestDto);
+    }
+
+    @PostMapping("/login")
+    public String logIn(@RequestBody LoginRequestDto loginRequestDto){
+        return loginService.logIn(loginRequestDto);
     }
 
 }
