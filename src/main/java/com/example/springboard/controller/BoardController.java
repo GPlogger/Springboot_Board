@@ -2,8 +2,11 @@ package com.example.springboard.controller;
 
 import com.example.springboard.DTO.BoardDto;
 import com.example.springboard.entity.BoardEntity;
+import com.example.springboard.error.ErrorCode;
+import com.example.springboard.error.exception.LoginErrorException;
 import com.example.springboard.repository.BoardRepository;
 import com.example.springboard.service.BoardService;
+import com.example.springboard.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -29,21 +32,30 @@ public class BoardController {
     }
 
     @PostMapping("/add")  // 생성            DB 넣는 과정 컨트롤러 > DTO 형식 > 서비스 > 엔티티형식 만들고 DTO 의 toEntity 사용 > 엔티티형식을 레퍼지토리에 세이브
-    public void add(@RequestBody BoardDto boardDto){
+    public void add(@CookieValue(value = "cookieName")String userName, @RequestBody BoardDto boardDto){
         // RequestBody : 사용자가 보낸 Json body 를 자동 파싱해주는 역할
         // 사용자가 보낸 Json 양식의 클래스를 설정하고, (@RequestBody 클래스명 객체명) 식으로 사용
-        boardService.add(boardDto);
+        if (userName == null) { throw new LoginErrorException("로그인되어있지 않습니다.", ErrorCode.UNAUTHORIZED_NONE_LOGIN);}
+        String user = LoginService.sessionBox.get(userName);
+        boardService.add(user, boardDto);
     }
 
     @PutMapping("/update/{id}")  // 수정
-    public BoardEntity update(@RequestBody BoardDto boardDto, @PathVariable Long id){
+    public BoardEntity update(@CookieValue(value = "cookieName")String userName, @RequestBody BoardDto boardDto, @PathVariable Long id){
         // PathVariable : 동적 path 를 수신하는 방법, /update/1 이 요청될 시 {id}를 자동으로 받아옴
-        boardService.update(boardDto, id);
+        if (userName == null) { throw new LoginErrorException("로그인되어있지 않습니다.", ErrorCode.UNAUTHORIZED_NONE_LOGIN);}
+        String user = LoginService.sessionBox.get(userName);
+
+        boardService.update(user, boardDto, id);
         return boardService.getFindOne(id);
     }
 
     @DeleteMapping("/delete/{id}") // 삭제
-    public void delete(@PathVariable Long id){
-        boardService.delete(id);
+    public void delete(@CookieValue(value = "cookieName")String userName, @PathVariable Long id){
+        if (userName == null) { throw new LoginErrorException("로그인되어있지 않습니다.", ErrorCode.UNAUTHORIZED_NONE_LOGIN);}
+
+        String user = LoginService.sessionBox.get(userName);
+
+        boardService.delete(user ,id);
     }
 }

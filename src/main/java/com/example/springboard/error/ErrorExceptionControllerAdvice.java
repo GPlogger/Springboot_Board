@@ -1,5 +1,6 @@
 package com.example.springboard.error;
 
+import com.example.springboard.error.exception.BoardErrorException;
 import com.example.springboard.error.exception.LoginErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,16 @@ public class ErrorExceptionControllerAdvice {
 
     @ExceptionHandler({LoginErrorException.class})  // LoginErrorException.class 를 지정
     public ResponseEntity<ErrorEntity> exceptionHandler(HttpServletRequest request, final LoginErrorException e){
+        return ResponseEntity
+                .status(e.getErrorCode().getStatus())
+                .body(ErrorEntity.builder()
+                        .errorCode(e.getErrorCode().getCode())
+                        .errorMessage(e.getErrorCode().getMessage())
+                        .build());
+    }
+
+    @ExceptionHandler({BoardErrorException.class})  // LoginErrorException.class 를 지정
+    public ResponseEntity<ErrorEntity> exceptionHandler(HttpServletRequest request, final BoardErrorException e){
         return ResponseEntity
                 .status(e.getErrorCode().getStatus())
                 .body(ErrorEntity.builder()

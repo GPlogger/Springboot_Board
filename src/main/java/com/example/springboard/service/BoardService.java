@@ -2,7 +2,12 @@ package com.example.springboard.service;
 
 import com.example.springboard.DTO.BoardDto;
 import com.example.springboard.entity.BoardEntity;
+import com.example.springboard.entity.UserEntity;
+import com.example.springboard.error.ErrorCode;
+import com.example.springboard.error.exception.BoardErrorException;
+import com.example.springboard.error.exception.LoginErrorException;
 import com.example.springboard.repository.BoardRepository;
+import com.example.springboard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,6 +20,7 @@ import java.util.List;
 @Slf4j
 public class BoardService{
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public List<BoardEntity> readAll(){        // 전체 출력
@@ -28,27 +34,35 @@ public class BoardService{
     }
 
     @Transactional
-    public void add(BoardDto boardDto) {
+    public void add(String user, BoardDto boardDto) {
+
         BoardEntity boardEntity = BoardEntity.builder()
                 .title(boardDto.getTitle())
-                .username(boardDto.getUsername())
+                .username(user)
                 .content(boardDto.getContent())
                 .build();
         boardRepository.save(boardEntity);
     }
 
     @Transactional
-    public void update(BoardDto boardDto, Long id) {
+    public void update(String user,BoardDto boardDto, Long id) {
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(
                 ()->{throw new RuntimeException("해당 번호의 게시물은 없습니다.");});
-        boardEntity.update(boardDto.getTitle(), boardDto.getUsername(), boardDto.getContent());       // 엔티티에 업데이트 함수 작성 필요
+        if(!user.equals(boardEntity.getUsername())){
+            throw new BoardErrorException("해당 요청에 대한 권한이 없습니다.", ErrorCode.FORBIDDEN_EXCEPTION);
+        }
+
+        boardEntity.update(boardDto.getTitle(),user, boardDto.getContent());
         boardRepository.save(boardEntity);
     }
 
     @Transactional
-    public void delete(Long id) {        // 삭제
+    public void delete(String user, Long id) {        // 삭제
+        BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(
+                ()->{throw new RuntimeException("해당 번호의 게시물은 없습니다.");});
+        if(!user.equals(boardEntity.getUsername())) {
+            throw new BoardErrorException("해당 요청에 대한 권한이 없습니다.", ErrorCode.FORBIDDEN_EXCEPTION);
+        }
         boardRepository.deleteById(id);
     }
-
-
 }

@@ -25,7 +25,7 @@ import java.util.Optional;
 @Slf4j
 public class LoginService {
     private final UserRepository userRepository;
-    private final Map<String, Object> sessionBox = new HashMap<>();
+    public static final Map<String, String> sessionBox = new HashMap<>();   // static : 공용변수
     private final PasswordEncoder passwordEncoder;      // 사용자의 비밀번호 인코딩을 위해 가져옴
 
     @Transactional
@@ -54,7 +54,10 @@ public class LoginService {
 
     @Transactional
     public String logIn(String userName, HttpServletResponse response) {
-        Cookie cookie = new Cookie("cookieName", userName);
+        String session = userName;
+        sessionBox.put(session, userName);
+
+        Cookie cookie = new Cookie("cookieName", session);
         cookie.setMaxAge(5*60); // 쿠키 만료 시간 설정(초단위)
         cookie.setPath("/");    // 모든 경로에서 접근 가능하도록 설정
         response.addCookie(cookie); // response 에 쿠키 추가

@@ -12,7 +12,6 @@ import lombok.*;
 @Builder
 public class BoardDto {
     private String title;
-    private String username;
     private String content;
 
 
