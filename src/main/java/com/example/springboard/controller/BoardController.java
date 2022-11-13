@@ -6,8 +6,6 @@ import com.example.springboard.repository.BoardRepository;
 import com.example.springboard.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +26,7 @@ public class BoardController {
     @GetMapping("/readunique/{id}") // 조회 (단일목록)
     public BoardEntity getFindOne(@PathVariable Long id){
         return boardService.getFindOne(id);
-    } // pk 값으로 찾지 않는 경우 생각해봐야함
+    }
 
     @PostMapping("/add")  // 생성            DB 넣는 과정 컨트롤러 > DTO 형식 > 서비스 > 엔티티형식 만들고 DTO 의 toEntity 사용 > 엔티티형식을 레퍼지토리에 세이브
     public void add(@RequestBody BoardDto boardDto){

@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import java.lang.reflect.Member;
 import java.util.HashMap;
@@ -51,12 +53,13 @@ public class LoginService {
     }
 
     @Transactional
-    public String logIn(LoginRequestDto loginRequestDto) {
-
-        UserEntity userEntity = userRepository.findByUserId(loginRequestDto.getUserId());
-        if(passwordEncoder.matches(loginRequestDto.getUserPw(), userEntity.getUserPw())) {
-            return "login Succeed";
-        }
-        return "login Failed";
+    public String logIn(String userName, HttpServletResponse response) {
+        Cookie cookie = new Cookie("cookieName", userName);
+        cookie.setMaxAge(5*60); // 쿠키 만료 시간 설정(초단위)
+        cookie.setPath("/");    // 모든 경로에서 접근 가능하도록 설정
+        response.addCookie(cookie); // response 에 쿠키 추가
+        log.info(cookie.getValue());
+        return "로그인 완료";
     }
+
 }
