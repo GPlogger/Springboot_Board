@@ -26,6 +26,11 @@ public class BoardController {
         return boardService.readAll();
     }
 
+    @GetMapping("/readmyboard")
+    public List<BoardEntity> getMy(@CookieValue(value = "cookieName")String userName){
+        return boardService.readMy(userName);
+    }
+
     @GetMapping("/readunique/{id}") // 조회 (단일목록)
     public BoardEntity getFindOne(@PathVariable Long id){
         return boardService.getFindOne(id);

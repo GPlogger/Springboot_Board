@@ -68,4 +68,13 @@ public class BoardService{
         boardRepository.delete(boardEntity);    // 11.14 코드리뷰 : delete() 안에 엔티티도 들어감
 //        boardRepository.deleteById(id);
     }
+
+    @Transactional
+    public List<BoardEntity> readMy(String userName) {
+        if(userName == null) {throw new LoginErrorException("로그인되어있지 않습니다.", ErrorCode.UNAUTHORIZED_NONE_LOGIN);}
+        String user = LoginService.sessionBox.get(userName);
+        UserEntity userEntity = userRepository.findByUserName(user);
+        List<BoardEntity> boardEntities = boardRepository.findByUserEntity(userEntity);
+        return boardEntities;
+    }
 }
