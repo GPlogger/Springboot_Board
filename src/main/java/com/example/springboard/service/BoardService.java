@@ -35,11 +35,13 @@ public class BoardService{
 
     @Transactional
     public void add(String user, BoardDto boardDto) {
+        UserEntity userEntity = userRepository.findByUserName(user);
 
         BoardEntity boardEntity = BoardEntity.builder()
                 .title(boardDto.getTitle())
                 .username(user)
                 .content(boardDto.getContent())
+                .userEntity(userEntity)
                 .build();
         boardRepository.save(boardEntity);
     }
@@ -52,8 +54,8 @@ public class BoardService{
             throw new BoardErrorException("해당 요청에 대한 권한이 없습니다.", ErrorCode.FORBIDDEN_EXCEPTION);
         }
 
-        boardEntity.update(boardDto.getTitle(),user, boardDto.getContent());
-        boardRepository.save(boardEntity);
+        boardEntity.update(boardDto.getTitle(),user, boardDto.getContent());        // 11.14 코드리뷰 : 1차 캐시 저장 후 한번더 저장
+//        boardRepository.save(boardEntity);    // 한번 더 세이브하면 업데이트로 들어감(이미 DB 에 있는값과 동일한 값이므로 SELECT 쿼리만 날아감)
     }
 
     @Transactional
@@ -63,6 +65,7 @@ public class BoardService{
         if(!user.equals(boardEntity.getUsername())) {
             throw new BoardErrorException("해당 요청에 대한 권한이 없습니다.", ErrorCode.FORBIDDEN_EXCEPTION);
         }
-        boardRepository.deleteById(id);
+        boardRepository.delete(boardEntity);    // 11.14 코드리뷰 : delete() 안에 엔티티도 들어감
+//        boardRepository.deleteById(id);
     }
 }

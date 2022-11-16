@@ -59,10 +59,10 @@ public class LoginService {
 
         Cookie cookie = new Cookie("cookieName", session);
         cookie.setMaxAge(5*60); // 쿠키 만료 시간 설정(초단위)
-        cookie.setPath("/");    // 모든 경로에서 접근 가능하도록 설정
+        cookie.setPath("/");    // 모든 경로에서 접근 가능하도록 설정 ( / 가 default )
         response.addCookie(cookie); // response 에 쿠키 추가
-        log.info(cookie.getValue());
+//        log.info(cookie.getValue());
         return "로그인 완료";
     }
-
+    
 }

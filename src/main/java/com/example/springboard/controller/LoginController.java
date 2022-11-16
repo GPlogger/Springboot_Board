@@ -54,7 +54,7 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public String logOut(@CookieValue(value = "cookieName", required = true)Cookie cookie, HttpServletResponse response){
+    public String logout(@CookieValue(value = "cookieName", required = true)Cookie cookie, HttpServletResponse response){
 
         if(cookie == null){
             throw new LoginErrorException("", ErrorCode.NONEXISTENT_COOKIE);

@@ -3,6 +3,7 @@
 package com.example.springboard.DTO;
 
 import com.example.springboard.entity.BoardEntity;
+import com.example.springboard.entity.UserEntity;
 import lombok.*;
 
 @Data
@@ -14,6 +15,7 @@ public class BoardDto {
     private String title;
     private String content;
 
+    private UserEntity userEntity;
 
 //    public BoardEntity toEntity(){         // DTO 에서 Entity 로 보냄(보안)
 //        BoardEntity boardEntity = BoardEntity.builder()     // builder 사용 ( builder 와 build 사이에 값 넣음)

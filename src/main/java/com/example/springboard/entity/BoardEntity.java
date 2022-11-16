@@ -27,6 +27,10 @@ public class BoardEntity {
     @Column(length = 1024, nullable = false, columnDefinition = "TEXT")
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)  //EAGER 전략은 필요하지 않은 쿼리도 JPA에서 함께 조회, N+1 문제 야기 가능
+    @JoinColumn(name ="user")
+    private UserEntity userEntity;
+
 
     public void update(String title_, String username_, String content_) {
         title = title_;
