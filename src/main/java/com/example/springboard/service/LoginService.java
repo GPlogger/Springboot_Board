@@ -19,6 +19,7 @@ import java.lang.reflect.Member;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -54,7 +55,9 @@ public class LoginService {
 
     @Transactional
     public String login(String userName, HttpServletResponse response) {
-        String session = userName;
+
+        String session = UUID.randomUUID().toString(); // 세션 암호화
+
         sessionBox.put(session, userName);
 
         Cookie cookie = new Cookie("cookieName", session);

@@ -26,6 +26,7 @@ public class BoardService{
     public List<BoardEntity> readAll(){        // 전체 출력
         return boardRepository.findAll();
     }       // 페이지 형식이 필요 없음, 리턴 필요 없음 ( findAll 실행 시 Response 에 자동으로 날아감 )
+
     @Transactional
     public BoardEntity getFindOne(Long id) {     // 단일 출력
         BoardEntity boardEntity = boardRepository.findById(id).orElseThrow(     // 예외처리 하지 않으면 오류
@@ -75,7 +76,9 @@ public class BoardService{
         if(userName == null) {throw new LoginErrorException("로그인되어있지 않습니다.", ErrorCode.UNAUTHORIZED_NONE_LOGIN);}
         String user = LoginService.sessionBox.get(userName);
         UserEntity userEntity = userRepository.findByUserName(user);
-        List<BoardEntity> boardEntities = boardRepository.findByUserEntity(userEntity);
+
+        List<BoardEntity> boardEntities = boardRepository.findAllbyUserEntity(userName);    // JPQL 이용 작성
+//        List<BoardEntity> boardEntities = boardRepository.findByUserEntity(userEntity);
         return boardEntities;
     }
 }
