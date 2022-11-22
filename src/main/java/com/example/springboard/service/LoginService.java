@@ -53,7 +53,7 @@ public class LoginService {
     }
 
     @Transactional
-    public String logIn(String userName, HttpServletResponse response) {
+    public String login(String userName, HttpServletResponse response) {
         String session = userName;
         sessionBox.put(session, userName);
 

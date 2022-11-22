@@ -50,7 +50,7 @@ public class LoginController {
             throw new LoginErrorException("계정 혹은 비밀번호가 일치하지 않습니다.", ErrorCode.INVALID_USER);
         }
 
-        return loginService.logIn(userEntity.getUserName(), response);
+        return loginService.login(userEntity.getUserName(), response);
     }
 
     @PostMapping("/logout")

@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -26,5 +27,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // csrf 기능 미사용
                 .formLogin().disable() // 기본 로그왼 화면 미사용
                 .headers().frameOptions().disable(); // HTTP 통신의 헤더 설정. iframe 설정 미사용
+
+
+        httpSecurity.sessionManagement(
+                s->s.sessionCreationPolicy(SessionCreationPolicy.ALWAYS) // 항상 세션 생성
+                        .sessionFixation(sessionFixationConfigurer -> sessionFixationConfigurer.changeSessionId())// 인증 시 새로운 세션 발급
+                        .maximumSessions(1) // 인증시 새로운 세션아이디 발급
+                        .maxSessionsPreventsLogin(true) // 동일 계정 로그인 시 기존 세션 만료(동시접속제한)
+        );
     }
 }
